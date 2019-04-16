@@ -23,9 +23,12 @@ def create_app():
     def login():
         data = request.args.to_dict()
         if data.get('id') and data.get('token'):
-            status, msg = dologin(data,secret=SECRET)
+            status, msg = dologin(data, secret=SECRET)
             return jsonify({"ok": status, "message": msg}), 200
         else:
             return jsonify({"ok": False, "message": "wrong params"}), 400
 
     return app
+
+
+app = create_app()
