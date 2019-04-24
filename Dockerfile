@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install gcc -y
 
 RUN pip install -r requirements.txt
 
-RUN apt-get purge gcc -y && apt-get clean
+RUN apt-get purge gcc -y && apt-get autoremove -y && apt-get clean -y
 
 ENTRYPOINT  ["gunicorn", "--workers=4", "--worker-class=gevent","--bind=0.0.0.0:8000","auth:app"]
 
