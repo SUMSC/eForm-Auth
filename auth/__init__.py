@@ -10,7 +10,7 @@ from auth.sso import checkMyauth
 SECRET = hashlib.md5()
 SECRET.update(os.environ.get('SECRET').encode('utf8'))
 SECRET = SECRET.hexdigest()
-keys = {'id_tag', 'secret', 'timestamp'}
+keys = {'id_tag', 'secret', 'timestamp', 'name', 'usertype'}
 
 if os.path.exists('/run/secrets/sso-passwd'):
     with open('/run/secrets/sso-passwd', 'r') as fp:
@@ -46,23 +46,25 @@ def create_app():
             else:
                 return jsonify({"ok": False, "message": "wrong params"}), 400
         elif request.method == 'GET':
-            if keys & request.args.keys():
-                print(request.args)
+            params = set([i for i in request.args.keys()])
+            # print(params)
+            if keys.issubset(params):
+                # print(request.args)
+                # print(type(keys))
                 id_tag = request.args['id_tag']
                 secret = request.args['secret']
                 timestamp = request.args['timestamp']
                 name = request.args['name']
                 usertype = request.args['usertype']
-                print("id_tag:{}\nsecret:{}\ntimestamp:{}".format(id_tag, secret, timestamp))
+                print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
                 res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
-                print()
                 # resp.status = falcon.HTTP_200
                 if res:
                     return jsonify({"status": "ok", "data": {"id": id_tag, "name": name, "usertype": usertype}})
                 else:
                     return jsonify({"status": "error", "data": "Timed Out"})
             else:
-                return jsonify({"status": "error", "data": "Something Wrong"}), 417
+                return jsonify({"status": "error", "data": "Lacking Params"})
 
     return app
 
