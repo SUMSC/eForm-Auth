@@ -36,6 +36,10 @@ def create_app():
     def healthcheck():
         return "I'm ok"
 
+    @app.route('/logout')
+    def logouter():
+        return 'Logouted'
+
     @app.route('/login/', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
@@ -58,7 +62,6 @@ def create_app():
                 usertype = request.args['usertype']
                 print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
                 res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
-                # resp.status = falcon.HTTP_200
                 if res:
                     return jsonify({"status": "ok", "data": {"id": id_tag, "name": name, "usertype": usertype}})
                 else:
