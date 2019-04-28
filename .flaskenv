@@ -1,0 +1,4 @@
+FLASK_APP=auth
+FLASK_RUN_PORT=8001
+FLASK_ENV=development
+SECRET=sumsc666
