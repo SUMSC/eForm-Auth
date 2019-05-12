@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify
 from auth.login import dologin
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 import hashlib
 import os
+import logging
 
 from auth.sso import checkMyauth
 
 if "SECRET" in os.environ:
     se = os.environ.get("SECRET")
+    logging.info("SECRET SET")
 else:
     se = "changethis"
 
@@ -21,6 +23,7 @@ if os.path.exists('/run/secrets/sso-passwd'):
         passwd = fp.readline()
 elif 'passwd' in os.environ.keys():
     passwd = os.environ.get('SSO_PASSWD')
+    logging.INFO("SSO_PASSWD SET")
 else:
     passwd = 'changeit'
     print("SSO Passwd not Found.\n Service may not work properly")
@@ -42,7 +45,6 @@ def logouter():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-@cross_origin()
 def login():
     if request.method == 'POST':
         # for clients
@@ -66,6 +68,7 @@ def login():
             name = request.args['name']
             usertype = request.args['usertype']
             # print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
+            logging.info(("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp)))
             res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
             if res:
                 return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
