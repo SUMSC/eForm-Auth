@@ -73,6 +73,6 @@ def login():
             if res:
                 return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
             else:
-                return jsonify({"error": "Time out", "data": "Secret check failed."}), 408
+                return jsonify({"error": "Time out", "data": "Secret check failed."}), 200
         else:
             return jsonify({"error": "Lacking parameters", "data": "Please ask admin"}), 400
