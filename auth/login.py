@@ -13,6 +13,7 @@ def dologin(data: dict, secret: str) -> (bool, dict):
     token = data['token']
     resp = requests.post(url=url, headers=headers, data=body.format(id, token))
     res = resp.text
+    print(res)
 
     if res.strip()[0] == '<':
         return False, "Login Failed"

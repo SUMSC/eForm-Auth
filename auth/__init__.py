@@ -45,7 +45,7 @@ def logouter():
 def login():
     if request.method == 'POST':
         # for clients
-        data = request.args.to_dict()
+        data = request.json
         if data.get('id') and data.get('token'):
             status, msg = dologin(data, secret=SECRET)
             return jsonify({"ok": status, "message": msg}), 200
@@ -69,6 +69,6 @@ def login():
             if res:
                 return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
             else:
-                return jsonify({"error": "Time out", "details": "Secret check failed."}), 408
+                return jsonify({"error": "Time out", "data": "Secret check failed."}), 408
         else:
-            return jsonify({"error": "Lacking parameters", "details": "Please ask admin"}), 400
+            return jsonify({"error": "Lacking parameters", "data": "Please ask admin"}), 400
