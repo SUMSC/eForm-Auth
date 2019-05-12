@@ -46,6 +46,7 @@ def login():
     if request.method == 'POST':
         # for clients
         data = request.json
+        print(data)
         if data.get('id') and data.get('token'):
             status, msg = dologin(data, secret=SECRET)
             return jsonify({"ok": status, "message": msg}), 200
