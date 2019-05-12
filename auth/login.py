@@ -21,3 +21,5 @@ def dologin(data: dict, secret: str) -> (bool, dict):
         data['exp'] = datetime.utcnow() + timedelta(days=3)
         print(secret)
         return True, jwt.encode(payload=data, key=secret, algorithm='HS256').decode('utf8')
+
+

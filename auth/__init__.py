@@ -65,6 +65,3 @@ def create_app():
                 return jsonify({"error": "Lacking parameters", "details": "Please ask admin"}), 400
 
     return app
-
-
-app = create_app()
