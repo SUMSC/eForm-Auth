@@ -21,6 +21,7 @@ keys = {'id_tag', 'secret', 'timestamp', 'name', 'usertype'}
 if os.path.exists('/run/secrets/sso-passwd'):
     with open('/run/secrets/sso-passwd', 'r') as fp:
         passwd = fp.readline()
+        logging.INFO("SSO_PASSWD get from secrets file")
 elif 'passwd' in os.environ.keys():
     passwd = os.environ.get('SSO_PASSWD')
     logging.INFO("SSO_PASSWD SET")
