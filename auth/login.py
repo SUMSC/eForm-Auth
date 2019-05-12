@@ -13,12 +13,13 @@ def dologin(data: dict, secret: str) -> (bool, dict):
     token = data['token']
     resp = requests.post(url=url, headers=headers, data=body.format(id, token))
     res = resp.text
-    data = json.loads(res)
-    if res.strip()[0] == '<' or "error" in data.keys():
+
+    if res.strip()[0] == '<':
+        return False, "Authentication Failed"
+    elif "error" in json.loads(res).keys():
+        print(res)
         return False, "Login Failed"
     else:
         data['exp'] = datetime.utcnow() + timedelta(days=3)
         # print(secret)
         return True, jwt.encode(payload=data, key=secret, algorithm='HS256').decode('utf8')
-
-

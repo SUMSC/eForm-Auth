@@ -22,37 +22,31 @@ if os.path.exists('/run/secrets/sso-passwd'):
 elif 'passwd' in os.environ.keys():
     passwd = os.environ.get('SSO_PASSWD')
 else:
-    passwd = 'changethis'
+    passwd = 'changeit'
     print("SSO Passwd not Found.\n Service may not work properly")
 
 # create and configure the app
 app = Flask(__name__)
-CORS(app=app, supports_credentials=True)
+CORS(app=app)
 
 
 # a simple page that says hello
-@app.route('/healthcheck/')
-@cross_origin()
+@app.route('/healthcheck')
 def healthcheck():
     return "I'm ok", 200
 
 
 @app.route('/logout')
-@cross_origin()
 def logouter():
     return 'Logouted', 200
 
 
-@app.route('/login', methods=['GET', 'POST', 'OPTIONS'])
+@app.route('/login', methods=['GET', 'POST'])
 @cross_origin()
 def login():
-    if request.method == 'OPTIONS':
-        return 'ok', 200
-
     if request.method == 'POST':
         # for clients
         data = request.json
-        print(data)
         if data.get('id') and data.get('token'):
             status, msg = dologin(data, secret=SECRET)
             return jsonify({"ok": status, "message": msg}), 200
@@ -71,7 +65,7 @@ def login():
             timestamp = request.args['timestamp']
             name = request.args['name']
             usertype = request.args['usertype']
-            print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
+            # print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
             res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
             if res:
                 return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
