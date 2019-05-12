@@ -41,7 +41,7 @@ def logouter():
     return 'Logouted', 200
 
 
-@app.route('/login/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         # for clients
