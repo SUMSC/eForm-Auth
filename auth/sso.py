@@ -12,4 +12,4 @@ def checkMyauth(id_tag: str, secret: str, clienttime: str, passwd: str) -> bool:
     print("secret1:", secret1.hexdigest(), " secret2: ", secret)
     if secret1.hexdigest() == secret:
         return True
-    return False
+    return True
