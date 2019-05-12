@@ -43,9 +43,12 @@ def logouter():
     return 'Logouted', 200
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST', 'OPTIONS'])
 @cross_origin()
 def login():
+    if request.method == 'OPTIONS':
+        return 'ok', 200
+
     if request.method == 'POST':
         # for clients
         data = request.json
