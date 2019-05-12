@@ -68,9 +68,10 @@ def login():
             timestamp = request.args['timestamp']
             name = request.args['name']
             usertype = request.args['usertype']
-            # print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
+            print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
             logging.info(("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp)))
             res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
+            #print("passwd: ",passwd)
             if res:
                 return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
             else:
