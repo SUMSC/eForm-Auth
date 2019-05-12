@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from auth.login import dologin
 from flask_cors import CORS
-from elasticapm.contrib.flask import ElasticAPM
 import hashlib
 import os
 
@@ -26,19 +25,15 @@ def create_app():
     # create and configure the app
     app = Flask(__name__)
     CORS(app=app, supports_credentials=True)
-    if 'ELASTIC_APM_SERVICE_NAME' in os.environ.keys():
-        app = ElasticAPM(app)
-    else:
-        print("APM setting not found. Disable it")
 
     # a simple page that says hello
     @app.route('/healthcheck/')
     def healthcheck():
-        return "I'm ok"
+        return "I'm ok", 200
 
     @app.route('/logout')
     def logouter():
-        return 'Logouted'
+        return 'Logouted', 200
 
     @app.route('/login/', methods=['GET', 'POST'])
     def login():
@@ -63,11 +58,11 @@ def create_app():
                 print("id_tag:{}\tsecret:{}\ttimestamp:{}".format(id_tag, secret, timestamp))
                 res = checkMyauth(id_tag=id_tag, secret=secret, clienttime=timestamp, passwd=passwd)
                 if res:
-                    return jsonify({"status": "ok", "data": {"id": id_tag, "name": name, "usertype": usertype}})
+                    return jsonify({"status": True, "data": {"id": id_tag, "name": name, "usertype": usertype}}), 200
                 else:
-                    return jsonify({"status": "error", "data": "Timed Out"})
+                    return jsonify({"error": "Time out", "details": "Secret check failed."}), 408
             else:
-                return jsonify({"status": "error", "data": "Lacking Params"})
+                return jsonify({"error": "Lacking parameters", "details": "Please ask admin"}), 400
 
     return app
 
