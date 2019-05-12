@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from auth.login import dologin
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import hashlib
 import os
 
@@ -32,16 +32,19 @@ CORS(app=app, supports_credentials=True)
 
 # a simple page that says hello
 @app.route('/healthcheck/')
+@cross_origin()
 def healthcheck():
     return "I'm ok", 200
 
 
 @app.route('/logout')
+@cross_origin()
 def logouter():
     return 'Logouted', 200
 
 
 @app.route('/login', methods=['GET', 'POST'])
+@cross_origin()
 def login():
     if request.method == 'POST':
         # for clients
