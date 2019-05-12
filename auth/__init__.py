@@ -65,3 +65,6 @@ def create_app():
                 return jsonify({"status": "error", "data": "Lacking Params"})
 
     return app
+
+
+create_app()
