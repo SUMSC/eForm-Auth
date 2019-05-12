@@ -38,13 +38,16 @@ def create_app():
     @app.route('/login/', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
+            # for clients
             data = request.args.to_dict()
             if data.get('id') and data.get('token'):
                 status, msg = dologin(data, secret=SECRET)
                 return jsonify({"ok": status, "message": msg}), 200
             else:
                 return jsonify({"ok": False, "message": "wrong params"}), 400
+
         elif request.method == 'GET':
+            # for ids service of Soochow university
             params = set([i for i in request.args.keys()])
             # print(params)
             if keys.issubset(params):
