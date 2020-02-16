@@ -18,8 +18,8 @@ if os.path.exists('/run/secrets/sso-passwd'):
 elif 'passwd' in os.environ.keys():
     passwd = os.environ.get('SSO_PASSWD')
 else:
-    passwd = 'changethis'
-    print("SSO Passwd not Found.\n Service may not work properly")
+    passwd = 'changeit'
+    print("SSO Passwd not Found.\nService may not work properly")
 
 
 def create_app():
@@ -32,7 +32,7 @@ def create_app():
         print("APM setting not found. Disable it")
 
     # a simple page that says hello
-    @app.route('/healthcheck/')
+    @app.route('/healthcheck')
     def healthcheck():
         return "I'm ok"
 
@@ -40,7 +40,7 @@ def create_app():
     def logouter():
         return 'Logouted'
 
-    @app.route('/login/', methods=['GET', 'POST'])
+    @app.route('/login', methods=['GET', 'POST'])
     def login():
         if request.method == 'POST':
             data = request.args.to_dict()
