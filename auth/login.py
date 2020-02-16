@@ -15,11 +15,11 @@ def dologin(data: dict, secret: str) -> (bool, dict):
     res = resp.text
 
     if res.strip()[0] == '<':
+        return False, "Authentication Failed"
+    elif "error" in json.loads(res).keys():
+        print(res)
         return False, "Login Failed"
     else:
-        data = json.loads(res)['data']
         data['exp'] = datetime.utcnow() + timedelta(days=3)
-        print(secret)
+        # print(secret)
         return True, jwt.encode(payload=data, key=secret, algorithm='HS256').decode('utf8')
-
-
