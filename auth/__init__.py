@@ -3,6 +3,7 @@ from auth.login import dologin
 from flask_cors import CORS
 import hashlib
 import os
+import logging
 
 from auth.sso import checkMyauth
 
@@ -30,6 +31,11 @@ def create_app():
     # create and configure the app
     app = Flask(__name__)
     CORS(app=app, supports_credentials=True)
+
+    # configure gunicorn_logger
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
 
     # a simple page that says hello
     @app.route('/healthcheck')
@@ -77,3 +83,4 @@ def create_app():
 
 
 app = create_app()
+
