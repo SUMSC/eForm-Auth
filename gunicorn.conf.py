@@ -7,7 +7,7 @@ user = 'amber'
 worker_class = 'gevent'     # run in gevent mode
 proc_name = 'gunicorn.proc'
 pidfile = '/home/amber/eForm-Backend/logs/eForm-Auth-0.pid'
-#loglevel = 'info'
-#access_logfile = '/home/amber/eForm-Backend/logs/eForm-Auth-0.log'
-#error_logfile = '/home/amber/eForm-Backend/logs/eForm-Auth-0.error.log'
+loglevel = 'info'
+accesslog = '/home/amber/eForm-Backend/logs/eForm-Auth-0.log'
+errorlog = '/home/amber/eForm-Backend/logs/eForm-Auth-0.error.log'
 
